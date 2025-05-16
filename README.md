@@ -43,8 +43,8 @@
 
 1. Clone the repository:
    ```
-   git clone https://github.com/your-org/FastAPI-Ignite-ai-engine.git
-   cd FastAPI-Ignite-ai-engine
+   git clone https://github.com/bakrianoo/fastapi-ignite.git
+   cd fastapi-ignite
    ```
 
 2. Set up environment:
