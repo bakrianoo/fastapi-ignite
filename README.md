@@ -1,8 +1,8 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="/assets/main-logo.png">
-    <source media="(prefers-color-scheme: light)" srcset="/assets/main-logo.png">
-    <img alt="FastAPI-Ignite Boilerplate " src="/assets/main-logo.png" width="352" height="59" style="max-width: 100%;">
+    <source media="(prefers-color-scheme: dark)" srcset="/assets/logo-main.png">
+    <source media="(prefers-color-scheme: light)" srcset="/assets/logo-main.png">
+    <img alt="FastAPI-Ignite Boilerplate " src="/assets/logo-main.png" width="369" height="652" style="max-width: 100%;">
   </picture>
   <br/>
   <br/>
