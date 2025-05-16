@@ -21,7 +21,7 @@ def parse_args():
     Parse command-line arguments
     """
     parser = argparse.ArgumentParser(
-        description="Rankyx  FastAPI Boilerplate  command-line utilities",
+        description="FastAPI Boilerplate  command-line utilities",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     

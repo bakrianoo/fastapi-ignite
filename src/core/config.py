@@ -18,7 +18,7 @@ ENV_FILE = ROOT_DIR / ".env"
 class GeneralSettings(BaseModel):
     debug: bool = False
     log_level: str = "INFO"
-    project_name: str = "Rankyx"
+    project_name: str = "FastAPI-Ignite"
     project_description: str = "A FastAPI application"
     version: str = "0.1.0"
     
@@ -77,7 +77,7 @@ class DatabaseSettings(BaseModel):
     port: int = 5432
     user: str = "postgres"
     password: str = "postgres"
-    database: str = "rankyx"
+    database: str = "app_db"
     
     # Override from environment variables
     @model_validator(mode='after')

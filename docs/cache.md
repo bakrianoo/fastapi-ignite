@@ -1,6 +1,6 @@
 # Cache Configuration
 
-Rankyx  FastAPI Boilerplate  supports multiple cache backends that can be configured through environment variables
+FastAPI-Ignite FastAPI Boilerplate  supports multiple cache backends that can be configured through environment variables
 or the configuration files.
 
 ## Available Cache Backends

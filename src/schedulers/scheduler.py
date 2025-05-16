@@ -33,8 +33,8 @@ async def init_scheduler() -> AsyncIOScheduler:
     # Configure job stores
     jobstores = {
         'default': RedisJobStore(
-            jobs_key='rankyx_ai_engine:scheduler:jobs',
-            run_times_key='rankyx_ai_engine:scheduler:run_times',
+            jobs_key='fastapi_ignite_app:scheduler:jobs',
+            run_times_key='fastapi_ignite_app:scheduler:run_times',
             host=settings.REDIS_HOST,
             port=settings.REDIS_PORT,
             db=settings.REDIS_DB,

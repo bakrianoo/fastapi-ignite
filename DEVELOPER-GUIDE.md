@@ -1,6 +1,6 @@
 # Developer Guide
 
-This document provides guidance for developers working on the Rankyx  FastAPI Boilerplate  project. It covers the architecture, development workflow, and best practices.
+This document provides guidance for developers working on FastAPI-Ignite Boilerplate  project. It covers the architecture, development workflow, and best practices.
 
 ## Table of Contents
 
@@ -18,7 +18,7 @@ This document provides guidance for developers working on the Rankyx  FastAPI Bo
 
 ## Architecture Overview
 
-Rankyx  FastAPI Boilerplate  is built with a clean architecture design that separates concerns into distinct layers:
+FastAPI-Ignite FastAPI Boilerplate  is built with a clean architecture design that separates concerns into distinct layers:
 
 1. **API Layer**: Handles HTTP requests/responses using FastAPI
 2. **Service Layer**: Contains business logic
@@ -40,7 +40,7 @@ The settings are cached and drive application behavior.
 ## Project Structure
 
 ```
-rankyx-ai-engine/
+fastapi-ignite/
 │
 ├── alembic/                         # Database migrations
 │
@@ -103,8 +103,8 @@ rankyx-ai-engine/
 
 1. **Clone the repository**:
    ```cmd
-   git clone https://github.com/your-org/rankyx-ai-engine.git
-   cd rankyx-ai-engine
+   git clone https://github.com/bakrianoo/fastapi-ignite
+   cd fastapi-ignite
    ```
 
 2. **Create a virtual environment**:
@@ -312,7 +312,7 @@ These paths come from the `docs_url`, `redoc_url`, and `openapi_url` parameters 
 
 ### Enabling and Disabling the Scheduler
 
-Rankyx  FastAPI Boilerplate  allows you to control whether the APScheduler runs or not using several methods:
+FastAPI-Ignite FastAPI Boilerplate  allows you to control whether the APScheduler runs or not using several methods:
 
 #### Environment Configuration
 
@@ -363,7 +363,7 @@ This is useful for deployment environments where you might want to run the sched
 
 ## Caching
 
-Rankyx  FastAPI Boilerplate  supports multiple cache backends that can be configured through environment variables or configuration files. For detailed information on caching, see [Cache Documentation](docs/cache.md).
+FastAPI-Ignite FastAPI Boilerplate supports multiple cache backends that can be configured through environment variables or configuration files. For detailed information on caching, see [Cache Documentation](docs/cache.md).
 
 ### Available Cache Backends
 

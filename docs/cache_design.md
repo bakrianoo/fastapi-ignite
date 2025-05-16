@@ -1,6 +1,6 @@
 # Cache System Design
 
-This document outlines the design and implementation of the cache system in the Rankyx  FastAPI Boilerplate .
+This document outlines the design and implementation of the cache system in the FastAPI-Ignite FastAPI Boilerplate .
 
 ## Overview
 

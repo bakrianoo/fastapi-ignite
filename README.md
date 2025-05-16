@@ -1,8 +1,8 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="/assets/logo-main.png">
-    <source media="(prefers-color-scheme: light)" srcset="/assets/logo-main.png">
-    <img alt="FastAPI-Ignite Boilerplate " src="/assets/logo-main.png" width="158" height="326" style="max-width: 100%;">
+    <source media="(prefers-color-scheme: dark)" srcset="/docs/assets/logo-main.png">
+    <source media="(prefers-color-scheme: light)" srcset="/docs/assets/logo-main.png">
+    <img alt="FastAPI-Ignite Boilerplate " src="/docs/assets/logo-main.png" width="158" height="326" style="max-width: 100%;">
   </picture>
   <br/>
 </p>
@@ -77,7 +77,7 @@
 
 ## Development
 
-See [DEVELOPER GUIDE](DEVELOPER_GUIDE.md) for detailed development information.
+See [DEVELOPER GUIDE](DEVELOPER-GUIDE.md) for detailed development information.
 
 ## License
 
