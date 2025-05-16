@@ -2,13 +2,14 @@
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="/assets/logo-main.png">
     <source media="(prefers-color-scheme: light)" srcset="/assets/logo-main.png">
-    <img alt="FastAPI-Ignite Boilerplate " src="/assets/logo-main.png" width="369" height="652" style="max-width: 100%;">
+    <img alt="FastAPI-Ignite Boilerplate " src="/assets/logo-main.png" width="158" height="326" style="max-width: 100%;">
   </picture>
-  <br/>
   <br/>
 </p>
 
-# FastAPI-Ignite Boilerplate 
+<p align="center">
+   <h2 align="center">FastAPI-Ignite Boilerplate </h2>
+</p>
 
 **FastAPI-Ignite** Boilerplate is a production-ready FastAPI boilerplate application with a comprehensive set of features for modern web backend development.
 
