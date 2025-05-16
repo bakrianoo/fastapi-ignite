@@ -16,5 +16,5 @@ sqlalchemy-stubs==0.4
 
 # Development tools
 watchfiles==1.0.5
-ipython==9.2.0
+ipython==8.36.0
 debugpy==1.8.14
