@@ -97,7 +97,6 @@ fastapi-ignite/
 
 - Python 3.10+
 - PostgreSQL
-- Redis
 
 ### Setting up locally
 
