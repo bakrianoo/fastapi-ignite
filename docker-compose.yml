@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  # FastAPI application
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: sh -c "alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - rankyx_network
+    restart: unless-stopped
+
+  # Background task worker
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python cli.py worker
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - rankyx_network
+    restart: unless-stopped
+
+  # Scheduler service
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python cli.py scheduler
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - rankyx_network
+    restart: unless-stopped
+
+  # PostgreSQL database
+  postgres:
+    image: postgres:17
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_DB=${POSTGRES_DB:-rankyx_dev}
+    ports:
+      - "5432:5432"
+    networks:
+      - rankyx_network
+    restart: unless-stopped
+
+  # Redis for caching, message broker and job store
+  redis:
+    image: redis:7.0-alpine
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - rankyx_network
+    restart: unless-stopped
+
+networks:
+  rankyx_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
