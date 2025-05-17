@@ -42,36 +42,68 @@
 ## Quick Start
 
 1. Clone the repository:
-   ```
+   ```bash
    git clone https://github.com/bakrianoo/fastapi-ignite.git
    cd fastapi-ignite
    ```
 
 2. Set up environment:
-   ```
+   ```bash
    # Copy the example .env file and edit with your configuration
    cp .env.example .env
    ```
 
-3. Start with Docker:
-   ```
+### Start with Docker:
+   ```bash
    docker-compose up -d
    ```
 
-4. Or start locally:
+### Setting up locally
+
+1. **Create a virtual environment**:
+   ```bash
+   python -m venv venv
+   venv\Scripts\activate
    ```
-   # Install dependencies
+
+2. **Install dependencies**:
+   ```bash
    pip install -r requirements.txt
-   pip install -r requirements-dev.txt  # for development
-
-   # Run database migrations
-   alembic upgrade head
-
-   # Start the API server
-   uvicorn main:app --reload
+   pip install -r requirements-dev.txt
    ```
 
-5. Access the API documentation:
+3. **Set up environment variables**:
+   ```bash
+   copy .env.example .env
+   ```
+   Edit the .env file with your configuration. All environment settings are now consolidated in this single file.
+
+4. **Run database migrations**:
+   ```bash
+   alembic upgrade head
+   ```
+
+5. Start the API server
+   ```bash
+   python cli.py api --reload
+   ```
+
+6. Run database migrations
+   ```bash
+   python cli.py db migrate
+   ```
+
+7. Start the background worker
+   ```bash
+   python cli.py worker
+   ```
+
+8. Start the scheduler
+   ```bash
+   python cli.py scheduler
+   ```
+
+9. Access the API documentation:
    - Swagger UI: http://localhost:8000/api/docs
    - ReDoc: http://localhost:8000/api/redoc
 
