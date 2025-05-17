@@ -5,9 +5,9 @@ import os
 import logging
 from functools import lru_cache
 from pathlib import Path
-from typing import Dict, List, Optional, Union, Any
+from typing import List, Union, Optional
 
-from pydantic import Field, PostgresDsn, RedisDsn, model_validator, BaseModel
+from pydantic import Field, PostgresDsn, RedisDsn, BaseModel, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Get the project root directory
@@ -16,152 +16,77 @@ ENV_FILE = ROOT_DIR / ".env"
 
 
 class GeneralSettings(BaseModel):
-    debug: bool = False
-    log_level: str = "INFO"
-    project_name: str = "FastAPI-Ignite"
-    project_description: str = "A FastAPI application"
-    version: str = "0.1.0"
+    debug: bool = os.environ.get("DEBUG", "False")
+    log_level: str = os.environ.get("LOG_LEVEL", "INFO")
+    project_name: str = os.environ.get("PROJECT_NAME", "FastAPI-Ignite")
+    project_description: str = os.environ.get("PROJECT_DESCRIPTION", "A FastAPI application")
+    version: str = os.environ.get("VERSION", "0.1.0")
     
     # Override from environment variables
-    @model_validator(mode='after')
-    def override_from_env(self) -> "GeneralSettings":
-        if "DEBUG" in os.environ:
-            debug_val = os.environ["DEBUG"].lower()
-            self.debug = debug_val == "true"
-        if "LOG_LEVEL" in os.environ:
-            self.log_level = os.environ["LOG_LEVEL"]
-        if "PROJECT_NAME" in os.environ:
-            self.project_name = os.environ["PROJECT_NAME"]
-        if "PROJECT_DESCRIPTION" in os.environ:
-            self.project_description = os.environ["PROJECT_DESCRIPTION"]
-        if "VERSION" in os.environ:
-            self.version = os.environ["VERSION"]
-        return self
+    @field_validator("debug", mode="before")
+    def parse_debug(cls, value: Union[str, bool]) -> bool:
+        if isinstance(value, str):
+            return value.lower() == "true"
+        return value
 
 
 class ApiSettings(BaseModel):
-    prefix: str = "/api"
-    host: str = "0.0.0.0"
-    port: int = 8000
-    
-    # Override from environment variables
-    @model_validator(mode='after')
-    def override_from_env(self) -> "ApiSettings":
-        if "API_PREFIX" in os.environ:
-            self.prefix = os.environ["API_PREFIX"]
-        if "HOST" in os.environ:
-            self.host = os.environ["HOST"]
-        if "PORT" in os.environ:
-            self.port = int(os.environ["PORT"])
-        return self
+    prefix: str = os.environ.get("API_PREFIX", "/api")
+    host: str = os.environ.get("HOST", "0.0.0.0")
+    port: int = int(os.environ.get("PORT", 8000))
 
 
 class CorsSettings(BaseModel):
-    origins: List[str] = ["*"]
+    origins: List[str] = os.environ.get("CORS_ORIGINS", ["*"])
     
     # Override from environment variables
-    @model_validator(mode='after')
-    def override_from_env(self) -> "CorsSettings":
-        if "CORS_ORIGINS" in os.environ:
+    @field_validator("origins", mode="before")
+    def parse_origins(cls, value: Union[str, List[str]]) -> List[str]:
+        if isinstance(value, str):
             import json
             try:
-                self.origins = json.loads(os.environ["CORS_ORIGINS"])
+                return json.loads(value)
             except json.JSONDecodeError:
-                # Fallback to a single origin if not valid JSON
-                self.origins = [os.environ["CORS_ORIGINS"]]
-        return self
+                return [value]
+        return value
 
 
 class DatabaseSettings(BaseModel):
-    host: str = "localhost"
-    port: int = 5432
-    user: str = "postgres"
-    password: str = "postgres"
-    database: str = "app_db"
-    
-    # Override from environment variables
-    @model_validator(mode='after')
-    def override_from_env(self) -> "DatabaseSettings":
-        # Check for environment variable overrides
-        env_prefix = "POSTGRES_"
-        if os.environ.get(f"{env_prefix}USER"):
-            self.user = os.environ[f"{env_prefix}USER"]
-        if os.environ.get(f"{env_prefix}PASSWORD"):
-            self.password = os.environ[f"{env_prefix}PASSWORD"]
-        if os.environ.get(f"{env_prefix}DB"):
-            self.database = os.environ[f"{env_prefix}DB"]
-        if os.environ.get(f"{env_prefix}HOST"):
-            self.host = os.environ[f"{env_prefix}HOST"]
-        if os.environ.get(f"{env_prefix}PORT"):
-            self.port = int(os.environ[f"{env_prefix}PORT"])
-        
-        return self
+    host: str = os.environ.get("POSTGRES_HOST", "localhost")
+    port: int = int(os.environ.get("POSTGRES_PORT", 5432))
+    user: str = os.environ.get("POSTGRES_USER", "postgres")
+    password: str = os.environ.get("POSTGRES_PASSWORD", "postgres")
+    database: str = os.environ.get("POSTGRES_DB", "app_db")
 
 
 class RedisSettings(BaseModel):
-    host: str = "localhost"
-    port: int = 6300
-    password: str = ""
-    db: int = 0
-    
-    # Override from environment variables
-    @model_validator(mode='after')
-    def override_from_env(self) -> "RedisSettings":
-        # Check for environment variable override
-        if os.environ.get("REDIS_HOST"):
-            self.host = os.environ["REDIS_HOST"]
-        if os.environ.get("REDIS_PASSWORD") is not None:  # Allow empty string
-            self.password = os.environ["REDIS_PASSWORD"]
-        if os.environ.get("REDIS_PORT"):
-            self.port = int(os.environ["REDIS_PORT"])
-        if os.environ.get("REDIS_DB"):
-            self.db = int(os.environ["REDIS_DB"])
-        return self
+    host: str = os.environ.get("REDIS_HOST", "localhost")
+    port: int = int(os.environ.get("REDIS_PORT", 6300))
+    password: str = os.environ.get("REDIS_PASSWORD", "")
+    db: int = int(os.environ.get("REDIS_DB", 0))
 
 
 class DramatiqSettings(BaseModel):
-    broker: str = "redis"
-    processes: int = 2
-    threads: int = 8
-    
-    # Override from environment variables
-    @model_validator(mode='after')
-    def override_from_env(self) -> "DramatiqSettings":
-        if os.environ.get("DRAMATIQ_BROKER"):
-            self.broker = os.environ["DRAMATIQ_BROKER"]
-        if os.environ.get("DRAMATIQ_PROCESSES"):
-            self.processes = int(os.environ["DRAMATIQ_PROCESSES"])
-        if os.environ.get("DRAMATIQ_THREADS"):
-            self.threads = int(os.environ["DRAMATIQ_THREADS"])
-        return self
+    broker: str = os.environ.get("DRAMATIQ_BROKER", "redis")
+    processes: int = int(os.environ.get("DRAMATIQ_PROCESSES", 2))
+    threads: int = int(os.environ.get("DRAMATIQ_THREADS", 8))
 
 
 class CacheSettings(BaseModel):
-    ttl_seconds: int = 300
-    backend_type: str = "redis"  # Options: "redis", "file", "memory"
-    file_path: str = "cache"  # Path for file-based cache, relative to project root
-    
-    # Override from environment variables
-    @model_validator(mode='after')
-    def override_from_env(self) -> "CacheSettings":
-        if os.environ.get("CACHE_BACKEND_TYPE"):
-            self.backend_type = os.environ["CACHE_BACKEND_TYPE"]
-        if os.environ.get("CACHE_TTL_SECONDS"):
-            self.ttl_seconds = int(os.environ["CACHE_TTL_SECONDS"])
-        if os.environ.get("CACHE_FILE_PATH"):
-            self.file_path = os.environ["CACHE_FILE_PATH"]
-        return self
+    ttl_seconds: int = int(os.environ.get("CACHE_TTL_SECONDS", 300))
+    backend_type: str = os.environ.get("CACHE_BACKEND_TYPE", "redis")  # Options: "redis", "file", "memory"
+    file_path: str = os.environ.get("CACHE_FILE_PATH", "cache")  # Path for file-based cache, relative to project root
 
 
 class SchedulerSettings(BaseModel):
-    enabled: bool = True  # Whether to enable the APScheduler
+    enabled: bool = os.environ.get("SCHEDULER_ENABLED", True)  # Whether to enable the APScheduler
     
     # Override from environment variables
-    @model_validator(mode='after')
-    def override_from_env(self) -> "SchedulerSettings":
-        if os.environ.get("SCHEDULER_ENABLED"):
-            self.enabled = os.environ.get("SCHEDULER_ENABLED").lower() == "true"
-        return self
+    @field_validator("enabled", mode="before")
+    def parse_enabled(cls, value: Union[str, bool]) -> bool:
+        if isinstance(value, str):
+            return value.lower() == "true"
+        return value
 
 
 class Settings(BaseSettings):
@@ -220,7 +145,7 @@ class Settings(BaseSettings):
         if self.general.debug:
             logging.debug("Configuration loaded from:")
             logging.debug(f"  - Environment variables (.env file at: {ENV_FILE})")
-            logging.debug(f"  - System environment variables")
+            logging.debug("  - System environment variables")
 
     # Legacy uppercase aliases for nested settings
     @property
